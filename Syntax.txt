@@ -1,0 +1,72 @@
+QUESTION  1
+
+Return the full name, the billing country, genre alongside with the total amount spent.
+
+select c.FirstName || ' ' ||c.LastName as Full_Name, 
+	i.BillingCountry,  
+	sum(i.total) as Total_spent, 
+	g.Name as Genre
+from Customer c
+join Invoice i
+	on c.CustomerId = i.CustomerId
+join InvoiceLine il
+	on il.InvoiceId = i.InvoiceId
+JOIN Track t
+	on t.TrackId =il.TrackId
+JOIN Genre g
+	on t.GenreId = g.GenreId
+group by 2
+order by 3 desc
+limit 10;
+
+QUESTION 2
+
+select the artist name, album, track name, length of the track and the  number of tracks based on the following sizes: Long movie if the Milliseconds are over 5000000, average movie if they are over 2000000, short movie if they are over 100000, long song for over 550000, average songs if they are over 350000, the remaining ones are normal length songs.
+
+
+select a.Title Album_name, ar.name Artist_name, t.Name Track_name, t.Milliseconds, count(*)no_of_tracks,
+	CASE when Milliseconds > 5000000 then 'Long Movie'
+	when Milliseconds > 2000000 then 'Average Movie'
+	WHEN Milliseconds > 1000000 then 'Short Movie'
+	WHEN Milliseconds > 550000 then 'Long Song'
+	WHEN Milliseconds > 350000 then 'Average lenght song'
+	ELSE 'Normal lenght songs' END as track_lenght
+from Album a
+JOIN Artist ar
+on a.ArtistId = ar.ArtistId
+JOIN Track T
+on a.AlbumId = t.AlbumId
+group by 6
+order by 4 desc ;
+
+QUESTION 3.
+
+Return the unit price and the total invoice amount spent on gender
+
+select t.UnitPrice, g.Name gender_name, sum(i.total) total_invoice
+	from Genre g
+	join Track t
+	on t.GenreId = g.GenreId
+	join InvoiceLine il
+	on il.TrackId = t.TrackId
+	JOIN Invoice i
+	on i.InvoiceId = il.InvoiceId
+	group by 2
+	order by 3 desc;
+
+
+QUESTION 4
+
+Select the full name of the top billed customers by year.
+
+select c.FirstName || ' ' || c.LastName as Full_Name, 
+	upper(country) Country, 
+	strftime('%Y',i.InvoiceDate) billing_year, 
+	sum(i.total) total_invoiced
+	from Customer c
+JOIN Invoice i
+	on c.CustomerId = i.CustomerId
+GROUP by 3
+order by 3;
+
+
