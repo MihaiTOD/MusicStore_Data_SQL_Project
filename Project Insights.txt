@@ -1,0 +1,2 @@
+Within this project I have explored the Music Store data using SQL quires: Aggregation, Clauses, Joins and Case Statements.
+The insights I found where transposed into visualization graphs and added meaningful explanation.
